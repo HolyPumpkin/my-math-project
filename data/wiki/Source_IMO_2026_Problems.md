@@ -52,3 +52,7 @@ The PDF itself contains only the six statements and the exam times; all other fa
 - This set is the canonical reference for the IMO 2026 problems; official solutions or AoPS solution write-ups are natural follow-up sources to queue.
 - Cross-problem threads: Problems 1 and 6 both hinge on prime-factorisation invariants; Problems 3 and 4 are both finite guarantee games; Problems 2 and 4 share a geometric-construction flavour.
 - Per-problem cards: see the linked pages in the table above.
+
+## Related Sources
+
+- **MechMath IMO 2026 Solutions** (`40c309407c5a`): Lean 4 formal statements and machine-checked proofs for all six problems, plus reader-facing solution PDFs. All proofs `sorry`-free, using standard Lean/Mathlib axioms. Sourced from [MechMath/IMO2026](https://github.com/MechMath/IMO2026) (Chinese Academy of Sciences). Total: 1178 minutes of agent time (775 min natural-language proofs + 403 min formal proofs).
