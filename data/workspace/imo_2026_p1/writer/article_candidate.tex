@@ -1,0 +1,373 @@
+\documentclass{article}
+% IMO 2026 Problem 1 -- GCD/LCM Blackboard.
+% Standalone article candidate (FULL_ARTICLE), repository KLMM house style.
+% Compiles with pdflatex from this directory once the KLMM/ style directory is
+% copied next to this file.
+\usepackage[]{KLMM/klmm}
+
+\DeclareMathOperator{\lcm}{lcm}
+
+\title{IMO 2026 Problem 1 --- GCD/LCM Blackboard}
+\author{MechMath Agent Team}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+There are $2026$ integers greater than $1$ on a blackboard. A move picks two
+entries $m,n>1$ and replaces them with $\gcd(m,n)$ and
+$\lcm(m,n)/\gcd(m,n)$. We prove that every play terminates after finitely many
+moves, that the terminal board contains exactly one entry $M>1$, and that $M$
+is independent of the choices made during the play: explicitly,
+$M=\prod_p p^{G_p}$, where $G_p$ is the gcd of the $p$-adic valuations of the
+\emph{initial} entries. This ``exponent-gcd number'' is not, in general, the
+numeric gcd of the initial entries; we give counterexamples.
+\end{abstract}
+
+\section{Introduction}
+
+This paper gives a complete solution of IMO 2026 Problem~1, the GCD/LCM
+blackboard problem. There are $2026$ integers greater than $1$ written on a
+blackboard, not necessarily different. In a move, Confucius chooses two
+integers $m>1$ and $n>1$ from different places on the blackboard and replaces
+these two integers with
+\[
+\gcd(m,n) \quad\text{and}\quad \frac{\lcm(m,n)}{\gcd(m,n)}.
+\]
+He continues to make moves while it is possible to do so.
+
+\begin{enumerate}
+\item[(a)] Prove that, regardless of the choices of Confucius, after finitely
+           many moves, exactly one integer $M$ on the blackboard is greater
+           than $1$.
+\item[(b)] Prove that the value of $M$ does not depend on the choices of
+           Confucius.
+\end{enumerate}
+
+\emph{Two observations drive the solution.} First, the identity
+$\lcm(m,n)\cdot\gcd(m,n)=mn$ shows that the product of the two chosen entries
+drops by the factor $g=\gcd(m,n)$. Hence the product $P$ of all board entries
+never increases, and it strictly decreases whenever $g>1$. When $g=1$ the pair
+becomes $(1,mn)$, so the number $C$ of entries exceeding $1$ drops by exactly
+one. The pair $(P,C)$ therefore descends strictly in lexicographic order, and a
+move is possible exactly when $C\geq 2$; this proves termination and part (a).
+
+Second, fix a prime $p$ and read a move on the $p$-adic exponents of the two
+chosen entries: if the exponents are $x,y$, then the new entries have exponents
+$\min(x,y)$ and $|x-y|$, one step of the subtractive Euclidean algorithm. Since
+$\gcd(x,y)=\gcd(\min(x,y),|x-y|)$, the gcd $G_p$ of the $p$-adic valuations of
+\emph{all} entries is invariant under every move. At the terminal board every
+entry except $M$ equals $1$, so $v_p(M)=G_p$ for every prime $p$, and hence
+\[
+M=\prod_p p^{G_p},
+\]
+the \emph{exponent-gcd number} of the initial multiset. This identifies $M$ and
+proves part (b).
+
+A word of caution: the formula $M=\prod_p p^{G_p}$ is \emph{not} the numeric
+gcd of the initial entries in general; the invariant $G_p$ is the gcd of the
+valuations, not their minimum. Counterexamples are collected in
+Section~\ref{sec:remarks}.
+
+\section{Statement of the Result}
+
+\begin{theorem}[IMO 2026 Problem 1]\label{thm:main}
+For the initial board of $2026$ integers ${}>1$ and the legal moves as defined:
+\begin{enumerate}
+\item[(a)] Every play terminates after finitely many moves, and the terminal
+           board contains exactly one integer $M>1$.
+\item[(b)] The value of $M$ is independent of the choices made during the play;
+           explicitly, $v_p(M)=G_p$ for every prime $p$, where
+           $G_p=\gcd_i v_p(a_i)$ is the gcd of the $p$-adic valuations of the
+           initial entries, so
+           \[
+           M=\prod_{p} p^{\,G_p}
+           \]
+           (the ``exponent-gcd number'' of the initial multiset), a finite
+           product determined solely by the initial board.
+\end{enumerate}
+\end{theorem}
+
+The proof is given in Section~\ref{sec:proofmain}; it rests on the lemmas of
+Section~\ref{sec:lemmas}. The notation used in the statement is formalized in
+Section~\ref{sec:nota}.
+
+\section{Notation and Preliminaries}\label{sec:nota}
+
+For a positive integer $n$ and a prime $p$, let $v_p(n)$ denote the $p$-adic
+valuation: the unique nonnegative integer such that $p^{v_p(n)}\mid n$ and
+$p^{v_p(n)+1}\nmid n$; set $v_p(1)=0$. By the fundamental theorem of
+arithmetic, every positive integer $n$ is uniquely
+$n=\prod_p p^{v_p(n)}$ (finitely many $p$ with $v_p(n)>0$); consequently two
+positive integers are equal iff their $p$-adic valuations agree for every
+prime $p$.
+
+Every board arising in a play consists of positive integers: the initial
+entries exceed $1$, and by Lemma~\ref{lem:lcmgcd} below each move replaces two
+positive integers by two positive integers. Hence valuations of entries are
+always defined.
+
+For a finite multiset $S$ of integers, define $\gcd(S)$ as the iterated gcd of
+its elements, with the conventions $\gcd(\emptyset)=0$, $\gcd(0,0)=0$, and
+$\gcd(x,0)=x$ for $x\geq 0$; the value is independent of the iteration order by
+associativity and commutativity of $\gcd$.
+
+\section{Main Argument}\label{sec:lemmas}
+
+\subsection{Arithmetic of a Single Move}
+
+We record the elementary facts about one move.
+
+\begin{lemma}[Exponent formulas for gcd and lcm]\label{lem:vpgcd}
+For a prime $p$ and positive integers $a,b$,
+\[
+v_p(\gcd(a,b))=\min(v_p(a),v_p(b)),\qquad
+v_p(\lcm(a,b))=\max(v_p(a),v_p(b)).
+\]
+\end{lemma}
+\begin{proof}
+Write $a=\prod_q q^{\alpha_q}$, $b=\prod_q q^{\beta_q}$ with $\alpha_q=v_q(a)$,
+$\beta_q=v_q(b)\geq 0$. By unique factorization, $d\mid a$ and $d\mid b$ iff
+$v_q(d)\leq\min(\alpha_q,\beta_q)$ for every prime $q$; hence the greatest
+common divisor of $a,b$ has exponents $\delta_q=\min(\alpha_q,\beta_q)$, and,
+similarly, the least common multiple has exponents
+$\max(\alpha_q,\beta_q)$. Thus
+$v_p(\gcd(a,b))=\min(v_p(a),v_p(b))$ and
+$v_p(\lcm(a,b))=\max(v_p(a),v_p(b))$ for each prime $p$.
+\end{proof}
+
+\begin{lemma}[Identity $\lcm\cdot\gcd=mn$]\label{lem:lcmgcd}
+For positive integers $m,n$ with $g=\gcd(m,n)$,
+\[
+\lcm(m,n)\cdot\gcd(m,n)=mn,\qquad\text{so}\qquad
+\frac{\lcm(m,n)}{\gcd(m,n)}=\frac{m}{g}\cdot\frac{n}{g}\in\mathbb{Z}_{>0}.
+\]
+Under a legal move, the product $P$ of all board entries changes from $P$ to
+$P/g$, and the new pair $(g,\lcm(m,n)/g)$ always contains at least one entry
+$>1$.
+\end{lemma}
+\begin{proof}
+For each prime $p$, Lemma~\ref{lem:vpgcd} gives
+$v_p(\lcm(m,n)\gcd(m,n))=\max(v_p(m),v_p(n))+\min(v_p(m),v_p(n))=v_p(mn)$, so
+the two positive integers are equal by unique factorization. Hence
+$\lcm(m,n)/\gcd(m,n)=mn/g^2=(m/g)(n/g)$, a positive integer because $g\mid m$
+and $g\mid n$. The pair product is $g\cdot(mn/g^2)=mn/g$, so the total product
+$P$ is divided by $g$. If $g>1$, the first new entry $g>1$; if $g=1$, the new
+pair is $(1,mn)$ with $mn\geq 4$ (since $m,n\geq 2$). In both cases the new
+pair contains an entry $>1$.
+\end{proof}
+
+\begin{lemma}[Per-prime exponent dynamics of a move]\label{lem:expdyn}
+Fix a prime $p$. A legal move on entries $m,n$ with $(x,y)=(v_p(m),v_p(n))$
+replaces the exponent pair by $(\min(x,y),|x-y|)$. The $p$-valuations of all
+other entries are unchanged, and the same rule holds uniformly for every prime.
+\end{lemma}
+\begin{proof}
+By Lemma~\ref{lem:lcmgcd}, $h=\lcm(m,n)/\gcd(m,n)$ is a positive integer, so
+$v_p(h)$ is well defined; writing $g=\gcd(m,n)$, Lemma~\ref{lem:vpgcd} gives
+\[
+v_p(h)=v_p(\lcm(m,n))-v_p(g)=\max(x,y)-\min(x,y)=|x-y|.
+\]
+The first new entry is $g$, with $v_p(g)=\min(x,y)$, and entries not moved keep
+their valuations. The argument uses only that $p$ is prime, so it applies
+uniformly to every prime (for a prime dividing neither $m$ nor $n$, the pair
+$(0,0)$ is fixed).
+\end{proof}
+
+Thus, for each prime $p$ individually, a move performs one subtractive
+Euclidean step on the two chosen exponents and leaves all other exponents
+untouched.
+
+\subsection{Invariants of the Play}
+
+The following two lemmas isolate the preservation principle behind part (b):
+a move replaces a pair of exponents by a pair with the same gcd.
+
+\begin{lemma}[Euclidean step identity for gcd]\label{lem:eucid}
+For all nonnegative integers $x,y$, with $\gcd(0,0)=0$ and $\gcd(x,0)=x$,
+\[
+\gcd(x,y)=\gcd(\min(x,y),\,|x-y|).
+\]
+\end{lemma}
+\begin{proof}
+Assume $x\leq y$; the other case is symmetric. Then $\min(x,y)=x$ and
+$|x-y|=y-x$. The ideals $(x,y)$ and $(x,y-x)$ are equal: $y=(y-x)+x\in(x,y-x)$,
+and $y-x\in(x,y)$. In $\mathbb{Z}$ every ideal is principal, and the unique
+nonnegative generator of $(a,b)$ is $\gcd(a,b)$, so
+$\gcd(x,y)=\gcd(x,y-x)$. The conventions $\gcd(0,0)=0$ and $\gcd(x,0)=x$ follow
+from $(0,0)=0\mathbb{Z}$ and $(x,0)=x\mathbb{Z}$.
+\end{proof}
+
+\begin{lemma}[Multiset gcd preservation]\label{lem:mgcdpres}
+Let $S$ be a finite multiset of integers with $|S|\geq 1$ and let $S'$ be
+obtained from $S$ by replacing two elements $a,b$ at distinct positions by
+$c,d$ such that $\gcd(c,d)=\gcd(a,b)$. Then $\gcd(S')=\gcd(S)$.
+\end{lemma}
+\begin{proof}
+Let $R$ be the multiset obtained from $S$ by deleting the two positions holding
+$a$ and $b$. By the grouping identity for the iterated gcd,
+$\gcd(S)=\gcd(\gcd(a,b),\gcd(R))$ and
+$\gcd(S')=\gcd(\gcd(c,d),\gcd(R))$, which are equal by hypothesis. If $|S|=2$
+then $R=\emptyset$, and the convention $\gcd(\emptyset)=0$ together with
+$\gcd(x,0)=x$ covers this case.
+\end{proof}
+
+\begin{lemma}[Exponent-gcd invariant --- part (b)]\label{lem:inv}
+For every prime $p$, the quantity
+\[
+G_p \;:=\; \gcd\{\,v_p(a)\mid a\text{ an entry of the board}\,\}
+\]
+is invariant under every legal move, with the convention $\gcd(0,0)=0$ on
+exponents.
+\end{lemma}
+\begin{proof}
+At every board state all entries are positive integers, so
+$M_p(B)=\{v_p(a):a\text{ on board}\}$ is a finite multiset of nonnegative
+integers and its iterated gcd $G_p(B)$ is well defined with the stated
+conventions.
+
+Consider a legal move on entries $m,n$ with $(x,y)=(v_p(m),v_p(n))$. By
+Lemma~\ref{lem:expdyn}, the pair $(x,y)$ is replaced by
+$(\min(x,y),|x-y|)$ and all other $p$-valuations are unchanged, so
+\[
+M_p(B') = (M_p(B)\setminus\{x,y\})\cup\{\min(x,y),|x-y|\}.
+\]
+By Lemma~\ref{lem:eucid}, $\gcd(\min(x,y),|x-y|)=\gcd(x,y)$, so the
+replacement pair has the same gcd as the pair it replaces; applying
+Lemma~\ref{lem:mgcdpres} to $M_p(B)$ with $a=x$, $b=y$, $c=\min(x,y)$,
+$d=|x-y|$ gives $G_p(B')=G_p(B)$.
+
+Thus $G_p$ is unchanged by every move; inductively over the move sequence,
+$G_p$ is constant throughout any play and equals its initial value.
+\end{proof}
+
+\subsection{Termination}
+
+Part (a) rests on a lexicographic monovariant.
+
+\begin{lemma}[Termination --- part (a)]\label{lem:term}
+For any board of $k\geq 1$ integers~${}>1$ (with $k=2026$ in the problem) and
+any legal play:
+\begin{enumerate}
+\item[(i)] The number $C$ of entries $>1$ satisfies $C\geq 1$ throughout and
+           never increases.
+\item[(ii)] The pair $(P,C)$, where $P$ is the product of all entries, strictly
+            decreases in lexicographic order after every move.
+\item[(iii)] Every play has at most $(k-1)+\lfloor\log_2 P_0\rfloor$ moves and
+             is therefore finite.
+\item[(iv)] The terminal board has exactly one entry $>1$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+For a move on entries $m,n$ with $g=\gcd(m,n)$, Lemma~\ref{lem:lcmgcd} gives
+that the new pair $(g,\lcm(m,n)/g)$ has product $mn/g$ and contains an entry
+$>1$.
+
+\textbf{Case $g>1$:} the total product is divided by $g\geq 2$, so $P$ strictly
+decreases, and $C$ does not increase (the new pair contributes at most two
+entries $>1$).
+
+\textbf{Case $g=1$:} $P$ is unchanged, and the new pair is $(1,mn)$ with
+$mn\geq 4>1$, so $C$ decreases by exactly $1$.
+
+Hence $C$ never increases; and $C\geq 1$ is preserved, because every new pair
+contains an entry $>1$ (initially $C=k\geq 1$). Therefore $(P,C)$ strictly
+decreases in lexicographic order after every move, proving (i) and (ii).
+
+Moves with $g>1$ divide $P$ by at least $2$ each, and $P\geq 1$ throughout, so
+there are at most $\lfloor\log_2 P_0\rfloor$ of them. Moves with $g=1$ decrease
+$C$ by exactly $1$, and $C\geq 1$, so there are at most $k-1$ of them. Every
+play thus has at most $(k-1)+\lfloor\log_2 P_0\rfloor$ moves and is finite,
+proving (iii).
+
+A move is possible exactly when $C\geq 2$ (two entries $>1$ at distinct
+places); hence a maximal play stops only at $C=1$, i.e.\ the terminal board has
+exactly one entry $>1$, proving (iv).
+\end{proof}
+
+\subsection{The Terminal Valuation}
+
+It remains to read the invariant $G_p$ off the terminal board.
+
+\begin{lemma}[Terminal valuation equality]\label{lem:termval}
+At the terminal board of any legal play, with $M$ the unique entry $>1$, for
+every prime $p$:
+\[
+v_p(M)=G_p,
+\]
+where $G_p$ is the invariant from Lemma~\ref{lem:inv}, equal to the gcd of the
+$p$-adic valuations of the \emph{initial} entries.
+\end{lemma}
+\begin{proof}
+By Lemma~\ref{lem:term}(iv), the terminal board consists of $M$ together with
+$2025$ entries equal to $1$. The exponent multiset at $p$ is therefore
+$\{v_p(M),0,\dots,0\}$ ($2025$ zeros), since $v_p(1)=0$, and its gcd is
+$v_p(M)$ by repeated use of $\gcd(x,0)=x$ (the convention $\gcd(0,0)=0$ covers
+the case $v_p(M)=0$). By Lemma~\ref{lem:inv}, this terminal value equals the
+initial value of $G_p$, i.e.\ the gcd of the $p$-adic valuations of the initial
+$2026$ entries.
+\end{proof}
+
+\section{Proof of the Main Theorem}\label{sec:proofmain}
+
+The lemmas of Section~\ref{sec:lemmas} assemble into the proof of
+Theorem~\ref{thm:main}.
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+\textbf{Part (a).} Instantiate Lemma~\ref{lem:term} with $k=2026$. All
+preconditions hold: there are $2026$ entries all $>1$, a legal move selects two
+entries $>1$ at distinct places, and play continues while possible. Hence every
+play is finite and its terminal board has exactly one entry $M>1$.
+
+\textbf{Part (b).} At the terminal board, the $2025$ entries other than $M$ are
+positive integers not exceeding $1$, hence equal to $1$. By
+Lemma~\ref{lem:termval}, $v_p(M)=G_p$ for every prime $p$, where $G_p$ is the
+gcd of the $p$-adic valuations of the initial entries. Unique prime
+factorization gives $M=\prod_p p^{v_p(M)}=\prod_p p^{G_p}$, a finite product:
+$G_p>0$ only for primes dividing some initial entry (all other $p$-valuations
+are $0$, so $G_p=\gcd(0,\dots,0)=0$ and $p^{G_p}=1$). If two plays terminate at
+$M_1$ and $M_2$, then $v_p(M_1)=G_p=v_p(M_2)$ for all $p$, so $M_1=M_2$ by
+unique factorization; hence $M$ is determined solely by the initial multiset
+and does not depend on the choices of Confucius.
+
+Finally, $M>1$: some initial entry is $\geq 2$ and has a prime divisor $p$ with
+$v_p(\text{that entry})\geq 1$, so $G_p\geq 1$ and $p^{G_p}\mid M$, consistent
+with part (a).
+\end{proof}
+
+\section{Remarks}\label{sec:remarks}
+
+\begin{remark}[$M$ is not the numeric gcd of the initial entries]
+The value $M=\prod_p p^{G_p}$ is in general \textbf{not} equal to the numeric
+gcd of the initial entries. Three examples:
+
+\begin{itemize}
+\item On the initial board $(4,8)$, one possible play is
+$(4,8)\to(4,2)\to(2,2)\to(2,1)$, terminating with $M=2$, while
+$\gcd(4,8)=4$. Indeed $G_2=\gcd(v_2(4),v_2(8))=\gcd(2,3)=1$, so
+$M=2^1=2$.
+\item On the initial board $(2,3)$, the only move gives $(2,3)\to(1,6)$, so
+$M=6$, while $\gcd(2,3)=1$. Here $G_2=\gcd(1,0)=1$ and
+$G_3=\gcd(0,1)=1$, so $M=2\cdot 3=6$.
+\item On the initial board $(4,8,9)$, one has $G_2=\gcd(2,3,0)=1$ and
+$G_3=\gcd(0,0,2)=2$, hence $M=2^1\cdot 3^2=18$, while
+$\gcd(4,8,9)=1$. The formula can produce an $M$ much larger than the
+numeric gcd.
+\end{itemize}
+
+The quantities differ because the $p$-adic valuation of the numeric gcd is
+$\min_i v_p(a_i)$, whereas $G_p=\gcd_i v_p(a_i)$ is the gcd of the valuations,
+not their minimum. The statement of part (b) asks only for independence of
+choices, which the exponent-gcd invariant proves; Theorem~\ref{thm:main} gives
+the correct explicit formula.
+\end{remark}
+
+\begin{remark}[On the number of moves]
+The bound $(k-1)+\lfloor\log_2 P_0\rfloor$ of Lemma~\ref{lem:term} depends on
+the initial board through the initial product $P_0$; part (a) asks only for
+finiteness, which the bound supplies for every initial board. The bound is
+uniform in the choices of Confucius.
+\end{remark}
+
+\end{document}

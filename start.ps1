@@ -1,6 +1,6 @@
-[CmdletBinding()]
+﻿[CmdletBinding()]
 param(
-  [ValidateSet('menu', 'kb', 'nl', 'fl', 'nl-claude', 'fl-claude', 'help')]
+  [ValidateSet('menu', 'kb', 'nl', 'fl', 'nl-claude', 'fl-claude', 'kb-claude', 'help')]
   [string]$Session = 'menu',
 
   [Parameter(ValueFromRemainingArguments = $true)]
@@ -151,6 +151,7 @@ function Invoke-Session([string]$Choice) {
     'fl'        { Launch-Codex (Join-Path $RootDir 'fl-prover') $false; break }
     'nl-claude' { Launch-Claude (Join-Path $RootDir 'nl-prover'); break }
     'fl-claude' { Launch-Claude (Join-Path $RootDir 'fl-prover'); break }
+    'kb-claude' { Launch-Claude (Join-Path $RootDir 'kb-manager'); break }
     default     { throw "Unknown session: $Choice" }
   }
 }
@@ -177,16 +178,18 @@ Write-Host '  2) NL-Prover via Codex'
 Write-Host '  3) FL-Prover via Codex'
 Write-Host '  4) NL-Prover via Claude Code'
 Write-Host '  5) FL-Prover via Claude Code'
-Write-Host '  6) Help'
+Write-Host '  6) KB-Manager via Claude Code'
+Write-Host '  7) Help'
 Write-Host '  Other) Exit'
 Write-Host ''
 
-switch (Read-Host 'Enter choice [1-6]') {
+switch (Read-Host 'Enter choice [1-7]') {
   '1' { Invoke-Session 'kb' }
   '2' { Invoke-Session 'nl' }
   '3' { Invoke-Session 'fl' }
   '4' { Invoke-Session 'nl-claude' }
   '5' { Invoke-Session 'fl-claude' }
-  '6' { Show-Help }
+  '6' { Invoke-Session 'kb-claude' }
+  '7' { Show-Help }
   default { Write-Host 'Exiting without starting a session.' }
 }

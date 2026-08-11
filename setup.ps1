@@ -1,6 +1,7 @@
 [CmdletBinding()]
 param(
-  [switch]$SkipLean
+  [switch]$SkipLean,
+  [switch]$Help
 )
 
 Set-StrictMode -Version Latest
@@ -9,6 +10,34 @@ $ErrorActionPreference = 'Stop'
 $RootDir = Split-Path -Parent $PSCommandPath
 $DataDir = Join-Path $RootDir 'data'
 $KbManagerDir = Join-Path $RootDir 'kb-manager'
+
+if ($Help) {
+  Write-Host ''
+  Write-Host 'MMAT Project Setup (Windows)' -ForegroundColor Cyan
+  Write-Host ''
+  Write-Host 'Usage: setup.cmd [-SkipLean] [-Help]'
+  Write-Host '       .\setup.ps1 [-SkipLean] [-Help]'
+  Write-Host ''
+  Write-Host 'Installs all dependencies for the MMAT research project.'
+  Write-Host ''
+  Write-Host 'Options:'
+  Write-Host '  -SkipLean    Skip Lean/elan installation'
+  Write-Host '  -Help        Show this help and exit'
+  Write-Host ''
+  Write-Host 'What this script does:'
+  Write-Host '  1. Creates the shared data\ directory layout'
+  Write-Host '  2. Installs uv (Python package manager) via winget if missing'
+  Write-Host '  3. Installs Python 3.14 via winget if missing'
+  Write-Host '  4. Synchronizes locked Python dependencies (uv sync)'
+  Write-Host '  5. Creates nl-prover\.env and fl-prover\.env'
+  Write-Host '  6. Optionally installs Lean 4 and the elan toolchain manager'
+  Write-Host '  7. Verifies the Python environment'
+  Write-Host '  8. Checks for optional tools (Codex CLI, Claude Code)'
+  Write-Host ''
+  Write-Host 'After setup, edit the .env files to add your API keys, then run:'
+  Write-Host '  start.cmd'
+  exit 0
+}
 
 function Find-Executable([string]$Name) {
   $command = Get-Command $Name -ErrorAction SilentlyContinue
@@ -122,17 +151,15 @@ if (-not $uv) {
   throw 'uv was installed but could not be located. Open a new PowerShell window and run setup.cmd again.'
 }
 
-try {
-  & $uv python find 3.14 | Out-Null
-}
-catch {
-  Write-Host 'Installing official Python 3.14...' -ForegroundColor Cyan
-  Install-WinGetPackage 'Python.Python.3.14'
-}
-
-& $uv python find 3.14 | Out-Null
+& $uv python find 3.14 2>&1 | Out-Null
 if ($LASTEXITCODE -ne 0) {
-  throw 'Python 3.14 installation could not be verified by uv.'
+  Write-Host 'Installing Python 3.14...' -ForegroundColor Cyan
+  Install-WinGetPackage 'Python.Python.3.14'
+
+  & $uv python find 3.14 2>&1 | Out-Null
+  if ($LASTEXITCODE -ne 0) {
+    throw 'Python 3.14 installation could not be verified by uv.'
+  }
 }
 
 Write-Host 'Synchronizing the locked Python 3.14 environment...' -ForegroundColor Cyan
@@ -179,4 +206,10 @@ if (-not (Find-Codex)) {
 }
 
 Write-Host ''
-Write-Host 'Setup complete. Double-click start.cmd to choose an MMAT session.' -ForegroundColor Green
+Write-Host 'Setup complete!' -ForegroundColor Green
+Write-Host ''
+Write-Host 'Next steps:' -ForegroundColor Cyan
+Write-Host '  1. Add your API keys to nl-prover\.env and fl-prover\.env'
+Write-Host '     (required only when using external LLM checks)'
+Write-Host '  2. Run: start.cmd'
+Write-Host ''

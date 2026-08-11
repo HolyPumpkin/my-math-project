@@ -1,0 +1,30 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cat:*)",
+      "Bash(cp -n:*)",
+      "Bash(file:*)",
+      "Bash(git -C .. diff:*)",
+      "Bash(git -C .. log:*)",
+      "Bash(git -C .. show:*)",
+      "Bash(git -C .. status:*)",
+      "Bash(git -C .. add:*)",
+      "Bash(git -C .. commit:*)",
+      "Bash(head:*)",
+      "Bash(ls:*)",
+      "Bash(mkdir -p:*)",
+      "Bash(rg:*)",
+      "Bash(sed -n:*)",
+      "Bash(tail:*)",
+      "Bash(test -d:*)",
+      "Bash(test -f:*)",
+      "Bash(uv run python:*)",
+      "Bash(wc:*)"
+    ],
+    "deny": [
+      "Bash(rm:*)",
+      "Bash(git add .:*)",
+      "Bash(git add -A:*)"
+    ]
+  }
+}

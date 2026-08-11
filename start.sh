@@ -30,7 +30,8 @@ print_menu() {
   echo "  3) FL-Prover via Codex"
   echo "  4) NL-Prover via Claude Code"
   echo "  5) FL-Prover via Claude Code"
-  echo "  6) Help"
+  echo "  6) KB-Manager via Claude Code"
+  echo "  7) Help"
   echo "  Any other input exits."
   echo
 }
@@ -47,7 +48,8 @@ print_help() {
   echo "read-only unless you approve a broader operation."
   echo
   echo "NL-Prover and FL-Prover both provide Codex and Claude Code harnesses over"
-  echo "the same prompts, deterministic tools, and shared skills."
+  echo "the same prompts, deterministic tools, and shared skills. KB-Manager also"
+  echo "provides both harnesses."
   echo
   echo "Arguments passed to ./start.sh are forwarded to the selected CLI."
   echo "Exit the active CLI, then run ./start.sh again to switch components."
@@ -100,7 +102,7 @@ require_directory "$DATA_DIR/inbox"
 
 while true; do
   print_menu
-  read -r -p "Enter choice [1-6]: " choice
+  read -r -p "Enter choice [1-7]: " choice
 
   case "$choice" in
     1)
@@ -119,6 +121,9 @@ while true; do
       launch_claude "$ROOT_DIR/fl-prover" "$@"
       ;;
     6)
+      launch_claude "$ROOT_DIR/kb-manager" "$@"
+      ;;
+    7)
       print_help
       read -r -p "Press Enter to return to the menu."
       ;;

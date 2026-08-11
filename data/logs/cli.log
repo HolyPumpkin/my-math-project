@@ -302,3 +302,17 @@
 2026-07-27 14:23:34,260 _search.frontier INFO frontier.push id=a created=True
 2026-07-27 14:23:34,261 _search.frontier INFO frontier.push id=b created=True
 2026-07-27 14:23:34,262 _search.frontier INFO frontier.mark id=a status=expanded
+2026-08-10 18:05:51,327 _search.matlas INFO matlas_search.search called: num_results=10 query='IMO 2026 Problem 1 GCD LCM exponent Euclidean step invariant'
+2026-08-10 18:05:52,729 _search.matlas INFO matlas_search.search succeeded: 10 results
+2026-08-10 18:06:31,854 _search.matlas INFO matlas_search.search called: num_results=10 query='IMO 2026 Problem 1 GCD LCM'
+2026-08-10 18:06:32,486 _search.matlas INFO matlas_search.search succeeded: 10 results
+2026-08-10 18:07:05,146 _search.matlas INFO matlas_search.search called: num_results=10 query='IMO 2026 Problem 1 GCD LCM'
+2026-08-10 18:07:05,755 _search.matlas INFO matlas_search.search succeeded: 10 results
+2026-08-10 18:22:32,561 _external.gemini INFO gemini_verify.verify called: proof=E:/multiAgent_code/my-math-project/data/workspace/imo_2026_p1/lemmas/lem_euclidean_pair_identity/generator/proof_v1.md model=gemini-2.5-pro
+2026-08-10 18:36:12,019 _external.gemini INFO gemini_verify.verify called: proof=E:/multiAgent_code/my-math-project/data/workspace/imo_2026_p1/lemmas/lem_lcm_gcd_identity/generator/proof_v1.md model=gemini-2.5-pro
+2026-08-10 18:36:15,290 _external.cross INFO cross_verify.verify called: proof=E:/multiAgent_code/my-math-project/data/workspace/imo_2026_p1/lemmas/lem_lcm_gcd_identity/generator/proof_v1.md model=gpt-5.5-pro
+2026-08-10 18:47:21,868 _external.gemini INFO gemini_verify.verify called: proof=E:\multiAgent_code\my-math-project\data\workspace\imo_2026_p1\lemmas\lem_lex_monovariant_termination\generator\proof_v1.md model=gemini-2.5-pro
+2026-08-10 18:47:22,750 _external.cross INFO cross_verify.verify called: proof=E:\multiAgent_code\my-math-project\data\workspace\imo_2026_p1\lemmas\lem_lex_monovariant_termination\generator\proof_v1.md model=gpt-5.5-pro
+2026-08-10 18:48:11,314 _external.gemini INFO gemini_verify.verify called: proof=E:/multiAgent_code/my-math-project/data/workspace/imo_2026_p1/lemmas/lem_move_exponent_dynamics/generator/proof_v1.md model=gemini-2.5-pro
+2026-08-10 19:04:03,994 _external.gemini INFO gemini_verify.verify called: proof=E:/multiAgent_code/my-math-project/data/workspace/imo_2026_p1/lemmas/lem_exponent_gcd_invariant/generator/proof_v1.md model=gemini-2.5-pro
+2026-08-10 19:04:07,035 _external.cross INFO cross_verify.verify called: proof=E:/multiAgent_code/my-math-project/data/workspace/imo_2026_p1/lemmas/lem_exponent_gcd_invariant/generator/proof_v1.md model=gpt-5.5-pro
